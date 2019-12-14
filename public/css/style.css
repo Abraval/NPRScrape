@@ -4,3 +4,7 @@ body{
 p{
     font-size: 14px;
 }
+
+#note-card {
+    opacity: 0.85;
+}

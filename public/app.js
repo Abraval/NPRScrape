@@ -72,6 +72,7 @@ if(title && body){
     }
   }).then(function(data) {
     console.log(data);
+    console.log("--------------------")
     $("#noteModal-" + podId).modal("hide");
     $("#noteTitleEntry-" + podId).val("");
     $("#noteBodyEntry-" + podId).val("");

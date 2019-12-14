@@ -48,18 +48,20 @@ router.get("/scrape", function(req, res) {
     });
 });
 
-// router.get("/podcasts", function(req, res) {
-//   db.Podcast.find({})
-//     .sort({ _id: 0 })
-//     .populate("note")
-//     .then(function(dbPodcast) {
-//       res.json(dbPodcast);
-//     })
-//     .catch(function(err) {
-//       res.json(err);
-//     });
-// });
+router.get("/podcasts", function(req, res) {
+  db.Podcast.find({})
+    .sort({ _id: 0 })
+    .populate("note")
+    .then(function(dbPodcast) {
+      res.json(dbPodcast);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
 
+
+//SAVE ARTICLES
 router.put("/podcasts/:id", function(req, res) {
   console.log(req.params.id);
   db.Podcast.findOneAndUpdate(
@@ -142,7 +144,7 @@ router.post("/podcasts/:id", function(req, res) {
 router.get("/api/podcasts/:id", function(req, res) {
   console.log("-------------------------------");
   console.log(req.params.id);
-  db.Podcast.findOne({
+  db.Podcast.find({
     _id: req.params.id
   })
     .populate("note")
@@ -150,7 +152,7 @@ router.get("/api/podcasts/:id", function(req, res) {
       //  res.json(dbPodcast)
       res.render("saved", { dbPodcast });
       // location.reload();
-      console.log("THIS IS DATA: ", dbPodcast.note);
+      console.log("THIS IS DATA: ", dbPodcast);
     })
     .catch(function(err) {
       res.json(err);

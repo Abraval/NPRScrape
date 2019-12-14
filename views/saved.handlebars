@@ -30,13 +30,19 @@
   <div class="collapse" id="viewComments-{{id}}">
     <div class="card card-body bg-dark text-light mt-4 mx-auto" id="noteArea-{{id}}">
       <h5 class="text-light">All comments:</h5>
-      {{#if note}}
-      <div class="card card-body my-2 pb-0 mx-3">
-      <h5>{{note.title}}</h5>
-      <p class="text-dark">{{note.body}}</p>
-      {{!-- <button class="btn btn-danger">Delete Note</button> --}}
+
+      {{#note}}
+      <div class="card card-body my-2 mx-3 pl-5" id="note-card">
+        <span class="ml-auto"><button type="button" class="btn btn-outline-success mx-2 py-0 px-2" data-id={{_id}}><i
+              class="far fa-edit"></i>
+
+          </button><button type="button" class="btn btn-outline-danger mx-2 py-0 px-2" data-id={{_id}}><i
+              class="far fa-trash-alt"></i></button></span>
+        <h5 class="text-danger font-weight-bold">{{title}}</h5>
+        <p class="text-dark">{{body}}</p>
       </div>
-      {{/if}}
+      {{/note}}
+
     </div>
   </div>
 </div>
