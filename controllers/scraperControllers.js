@@ -165,12 +165,13 @@ router.delete("/podcasts/:podId/note/:noteId", function(req, res) {
   db.note
     .deleteOne({ _id: req.params.noteId })
     .then(function() {
-      return db.Podcat.update(
+      return db.Podcast.update(
         { _id: req.params.podId },
-        { $pull: { comments: req.params.commentId } }
+        { $pull: { note: req.params.noteId } }
       );
     })
     .then(function(dbPodcast) {
+
       res.json(dbPodcast);
     })
     .catch(function(err) {
