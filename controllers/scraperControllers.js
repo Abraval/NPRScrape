@@ -158,6 +158,8 @@ router.get("/api/podcasts/:id", function(req, res) {
       res.json(err);
     });
 });
+
+//////////////////////////////////////
 // Route for deleting a note
 router.delete("/podcasts/:podId/note/:noteId", function(req, res) {
   db.note

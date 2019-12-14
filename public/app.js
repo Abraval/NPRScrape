@@ -62,40 +62,53 @@ $(document).on("click", "#saveNote", function(event) {
   // console.log("SAVE BTN: ", podId);
   var title = $("#noteTitleEntry-" + podId).val();
   var body = $("#noteBodyEntry-" + podId).val();
-if(title && body){
-  $.ajax({
-    type: "POST",
-    url: "/podcasts/" + podId,
-    data: {
-      title: title,
-      body: body
-    }
-  }).then(function(data) {
-    console.log(data);
-    console.log("--------------------")
-    $("#noteModal-" + podId).modal("hide");
-    $("#noteTitleEntry-" + podId).val("");
-    $("#noteBodyEntry-" + podId).val("");
-    location.reload();
-
-  });
-}
-else {
-  $("#errorModal").modal("show")
-}
+  if (title && body) {
+    $.ajax({
+      type: "POST",
+      url: "/podcasts/" + podId,
+      data: {
+        title: title,
+        body: body
+      }
+    }).then(function(data) {
+      console.log(data);
+      $("#noteModal-" + podId).modal("hide");
+      $("#noteTitleEntry-" + podId).val("");
+      $("#noteBodyEntry-" + podId).val("");
+      location.reload();
+    });
+  } else {
+    $("#errorModal").modal("show");
+  }
 });
 
 $(document).on("click", "#viewNote", function(event) {
   event.preventDefault();
   var podId = $(this).attr("data-id");
-  console.log("/api/podcasts/" + podId )
+  console.log("/api/podcasts/" + podId);
   $.ajax({
     type: "GET",
-    url: "/api/podcasts/" + podId 
+    url: "/api/podcasts/" + podId
   }).then(function() {
-  console.log()
-
+    console.log();
   });
-  
 });
 
+$(document).on("click", "#delete-note", function(event) {
+  event.preventDefault();
+  console.log("this works!");
+  var noteId = $(this).attr("data-id");
+  let podId = $(this)
+    .parent()
+    .attr("data-id");
+  $.ajax({
+    url: "/podcasts/" + podId + "/note/" + noteId,
+    type: "DELETE"
+  }).then(function() {
+    $("#notificationModal").modal("show");
+  });
+});
+
+$(document).on("click", "#closeNotification", function() {
+  location.reload();
+});

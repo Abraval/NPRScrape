@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var PodcastSchema = new Schema({
@@ -13,14 +13,14 @@ var PodcastSchema = new Schema({
     type: Boolean,
     default: false
   },
-  note: 
+  note: [
     {
       type: Schema.Types.ObjectId,
       ref: "note"
     }
+  ]
 });
 
 var Podcast = mongoose.model("Podcast", PodcastSchema);
-
 
 module.exports = Podcast;
