@@ -1,0 +1,28 @@
+{{#each podcasts}}
+{{#unless saved}}
+<div id="podCard" class="card border-secondary py-4 px-4 my-3 mx-auto podcast" style="max-width: 80rem;">
+  <h4 class="text-danger">
+    {{title}}
+  </h4>
+
+  <div class="row">
+    <div class="col-3">
+      <img class="img img-fluid img-thumbnail" {{#if img}} src={{img}}{{/if}} src="/css/img/npr.png"
+       >
+    </div>
+
+
+    <div class="col-8">
+      <a class="text-secondary my-2" href="{{link}}" target="_blank"><i class="fas fa-volume-up"></i> Listen Here</a>
+      <p class="teaser">{{teaser}}</p>
+      <div>
+        <button type="button" class="btn btn-outline-primary" id="save" data-id="{{_id}}">Save Podcast</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{/unless}}
+{{/each}}
+
+

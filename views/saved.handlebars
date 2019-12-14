@@ -1,0 +1,92 @@
+{{#each podcasts}}
+{{#if saved}}
+<div id="podCard" data-id="{{_id}}" class="card border-secondary py-4 px-4 my-3 mx-auto podcast"
+  style="max-width: 80rem;">
+  <h4 class="text-danger">
+    {{title}}
+  </h4>
+
+  <div class="row">
+    <div class="col-3">
+      <img class="img img-fluid img-thumbnail" {{#if img}} src={{img}}{{/if}} src="/css/img/npr.png">
+    </div>
+
+
+    <div class="col-8">
+      <a class="text-secondary my-2" href="{{link}}" target="_blank"><i class="fas fa-volume-up"></i> Listen
+        Here</a>
+      <p class="teaser">{{teaser}}</p>
+      <div>
+        <button type="button" class="btn btn-outline-warning" id="addNote" data-id="{{_id}}">Add
+          comment</button>
+        <button type="button" class="btn btn-outline-success" id="viewNote" data-id="{{_id}}" data-toggle="collapse"
+          data-target="#viewComments-{{id}}" aria-expanded="false" aria-controls="viewComments-{{id}}">View
+          Comments</button>
+        <button type="button" class="btn btn-outline-danger" id="deleteSaved" data-id="{{_id}}">Remove
+          Podcast</button>
+      </div>
+    </div>
+  </div>
+  <div class="collapse" id="viewComments-{{id}}">
+    <div class="card card-body bg-dark text-light mt-4 mx-auto" id="noteArea-{{id}}">
+      <h5 class="text-light">All comments:</h5>
+      {{#if note}}
+      <div class="card card-body my-2 pb-0 mx-3">
+      <h5>{{note.title}}</h5>
+      <p class="text-dark">{{note.body}}</p>
+      {{!-- <button class="btn btn-danger">Delete Note</button> --}}
+      </div>
+      {{/if}}
+    </div>
+  </div>
+</div>
+
+{{!-- Note Modal --}}
+<div id="noteModal-{{id}}" class="modal fade noteModal" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add a comment</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <input type="text" id="noteTitleEntry-{{id}}" class="noteInput form-control" placeholder="Title">
+          </div>
+          <div class="form-group">
+            <textarea type="text" id="noteBodyEntry-{{id}}" class="noteInput form-control"
+              placeholder="Enter Your Comment Here"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" id="saveNote" data-id="{{_id}}">Save Comment</button>
+        <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{{/if}}
+{{/each}}
+
+{{!-- Error Modal --}}
+<div class="modal" id="errorModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Please, fill out all fields</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="closeError" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
