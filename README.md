@@ -15,15 +15,19 @@ NPR Politics Podcast Scraper is a web application that captures the headline, su
 ![](public/css/img/1.png)
 
 
-Once displayed, each podcast provides the option to save an episode using a "Save Podcast". Additionally, user can navigate to the saved podcast(s) using the "View Saved Episodes" button.
+
+Once displayed, user has an option to save episode using a "Save Podcast" button. 
+Additionally, user can navigate to the saved podcast(s) using the "View Saved Episodes" button.
 
 ![](public/css/img/2.png)
+
 
 
 Once there, user can add notes to any saved episodes, view notes previosly added or remove episodes from "Saved".
 
 ![](public/css/img/3.png)
 ![](public/css/img/4.png)
+
 
 
 ## Technologies Used
@@ -39,8 +43,8 @@ Once there, user can add notes to any saved episodes, view notes previosly added
 - Express
 - Handlebars.js
 
-## Author:
 
+## Author:
 
 - [Valentyna Abraimova](https://abraval.github.io/MainPortfolio)
 
