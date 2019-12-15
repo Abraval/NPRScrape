@@ -12,7 +12,7 @@
 
 ## Overview
 
-> NPR Politics Podcast Scraper is a web application that captures the headline, summary, image and link to the lates podcas
+> NPR Politics Podcast Scraper is a web application that captures the headline, summary, image and link to the latest podcast
 > episodes from [NPR POLITICS PODCAST](https://www.npr.org/podcasts/510310/npr-politics-podcast) web page.
 
 ![](public/css/img/1.png)
