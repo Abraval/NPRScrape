@@ -1,16 +1,15 @@
 {{#each podcasts}}
 {{#if saved}}
+{{!-- Dynamically creating a "saved" podcast card --}}
 <div id="podCard" data-id="{{_id}}" class="card border-secondary py-4 px-4 my-3 mx-auto podcast"
   style="max-width: 80rem;">
   <h4 class="text-danger">
     {{title}}
   </h4>
-
   <div class="row">
     <div class="col-3">
       <img class="img img-fluid img-thumbnail" {{#if img}} src={{img}}{{/if}} src="/css/img/npr.png">
     </div>
-
 
     <div class="col-8">
       <a class="text-secondary my-2" href="{{link}}" target="_blank"><i class="fas fa-volume-up"></i> Listen
@@ -19,7 +18,7 @@
       <div>
         <button type="button" class="btn btn-outline-warning" id="addNote" data-id="{{_id}}">Add
           comment</button>
-        <button type="button" class="btn btn-outline-success" id="viewNote" data-id="{{_id}}" data-toggle="collapse"
+        <button type="button" class="btn btn-outline-success" id="viewNote" data-id={{_id}} data-toggle="collapse"
           data-target="#viewComments-{{id}}" aria-expanded="false" aria-controls="viewComments-{{id}}">View
           Comments</button>
         <button type="button" class="btn btn-outline-danger" id="deleteSaved" data-id="{{_id}}">Remove
@@ -27,19 +26,51 @@
       </div>
     </div>
   </div>
-  <div class="collapse" id="viewComments-{{id}}">
-    <div class="card card-body bg-dark text-light mt-4 mx-auto" id="noteArea-{{id}}">
+  <div class="collapse" id="viewComments-{{_id}}">
+    <div class="card comments-card card-body bg-dark text-light mt-4 mx-auto" data-id={{_id}} id="noteArea-{{id}}">
       <h5 class="text-light">All comments:</h5>
 
+      {{!-- Dynamically creating comment --}}
       {{#note}}
       <div class="card card-body my-2 mx-3 pl-5" id="note-card">
-        <span class="ml-auto"><button type="button" class="btn btn-outline-success mx-2 py-0 px-2" data-id={{_id}}><i
-              class="far fa-edit"></i>
+        <span class="ml-auto"><button type="button" id="edit-note" class="btn btn-outline-success mx-2 py-0 px-2"
+            data-id={{_id}}><i class="far fa-edit"></i>
 
-          </button><button type="button" class="btn btn-outline-danger mx-2 py-0 px-2" data-id={{_id}} id="delete-note"><i
-              class="far fa-trash-alt"></i></button></span>
-        <h5 class="text-danger font-weight-bold">{{title}}</h5>
-        <p class="text-dark">{{body}}</p>
+          </button><button type="button" class="btn btn-outline-danger mx-2 py-0 px-2" data-id={{_id}}
+            id="delete-note"><i class="far fa-trash-alt"></i></button></span>
+        <h5 class="text-danger font-weight-bold" id="note-title-{{_id}}">{{title}}</h5>
+        <p class="text-dark" id="note-body-{{_id}}">{{body}}</p>
+      </div>
+
+      {{!-- Edit Note Modal --}}
+      <div id="editModal-{{_id}}" class="modal fade editModal" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Edit a comment</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <input type="text" id="editnoteTitleEntry-{{id}}" class="editnoteInput form-control"
+                    placeholder="Edit Title">
+                </div>
+                <div class="form-group">
+                  <textarea type="text" id="editnoteBodyEntry-{{id}}" class="editnoteInput form-control"
+                    placeholder="Edit Your Comment Here"></textarea>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-primary" id="updateNote" data-id="{{_id}}">Update
+                Comment</button>
+              <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
       </div>
       {{/note}}
 
@@ -48,7 +79,7 @@
 </div>
 
 {{!-- Note Modal --}}
-<div id="noteModal-{{id}}" class="modal fade noteModal" role="dialog">
+<div id="noteModal-{{_id}}" class="modal fade noteModal" role="dialog">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -75,6 +106,7 @@
     </div>
   </div>
 </div>
+
 {{/if}}
 {{/each}}
 
@@ -97,7 +129,8 @@
   </div>
 </div>
 
-{{!-- Notification Modal --}}
+{{!-- Notification Modals --}}
+{{!-- Deleted succesfully --}}
 <div class="modal" id="notificationModal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -108,6 +141,42 @@
       </div>
       <div class="modal-body">
         <p>Comment deleted succesfully</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="closeNotification" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{{!-- Updated succesfully --}}
+<div class="modal" id="notificationUpdateModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Comment updated succesfully</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="closeNotification" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{{!-- Added succesfully --}}
+<div class="modal" id="notificationSavedModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Comment added succesfully</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" id="closeNotification" data-dismiss="modal">Close</button>

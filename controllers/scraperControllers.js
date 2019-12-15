@@ -6,6 +6,8 @@ var cheerio = require("cheerio");
 var db = require("../models");
 
 ///////PODCAST ROUTES SECTION//////
+
+// Displaying all scraped podcasts by rendering indexedDB.handlebars
 router.get("/", (req, res) => {
   db.Podcast.find({ saved: false })
     .sort({ _id: 0 })
@@ -13,6 +15,7 @@ router.get("/", (req, res) => {
     .catch(err => res.json(err));
 });
 
+// Getting new podcasts episodes
 router.get("/scrape", function(req, res) {
   axios
     .get("https://www.npr.org/podcasts/510310/npr-politics-podcast")
@@ -60,8 +63,7 @@ router.get("/podcasts", function(req, res) {
     });
 });
 
-
-//SAVE ARTICLES
+//Saving and Unsaving PODCASTS. Updating SAVED (to true or false)
 router.put("/podcasts/:id", function(req, res) {
   console.log(req.params.id);
   db.Podcast.findOneAndUpdate(
@@ -79,6 +81,7 @@ router.put("/podcasts/:id", function(req, res) {
     });
 });
 
+//Create a new comment
 router.get("/podcasts/:id", function(req, res) {
   db.note.create(req.body).then(function(dbNote) {
     return db.Podcast.findOne(
@@ -96,6 +99,8 @@ router.get("/podcasts/:id", function(req, res) {
       });
   });
 });
+
+//Removing all podcasts from page
 router.delete("/scrape", function(req, res) {
   db.Podcast.remove({})
     .then(function() {
@@ -106,11 +111,12 @@ router.delete("/scrape", function(req, res) {
     });
 });
 
+//Displaying all Saved podcasts by rendering saved.handlebars
 router.get("/saved", function(req, res) {
   db.Podcast.find({ saved: true })
     .populate("note")
     .then(podcasts => {
-      // console.log(podcasts)
+      // res.json(podcasts)
       res.render("saved", { podcasts });
     })
     .catch(function(err) {
@@ -119,6 +125,7 @@ router.get("/saved", function(req, res) {
 });
 
 //////////NOTES SECTION//////////
+
 // Route for saving/updating an Podcast's associated Note
 router.post("/podcasts/:id", function(req, res) {
   // console.log(req.params.id)
@@ -140,6 +147,7 @@ router.post("/podcasts/:id", function(req, res) {
       });
   });
 });
+
 // Route for grabbing a specific Podcast by id populate it with it's note
 router.get("/api/podcasts/:id", function(req, res) {
   console.log("-------------------------------");
@@ -149,7 +157,7 @@ router.get("/api/podcasts/:id", function(req, res) {
   })
     .populate("note")
     .then(function(dbPodcast) {
-      //  res.json(dbPodcast)
+      // res.json(dbPodcast)
       res.render("saved", { dbPodcast });
       // location.reload();
       console.log("THIS IS DATA: ", dbPodcast);
@@ -159,23 +167,42 @@ router.get("/api/podcasts/:id", function(req, res) {
     });
 });
 
-//////////////////////////////////////
 // Route for deleting a note
 router.delete("/podcasts/:podId/note/:noteId", function(req, res) {
+  console.log("THIS IS THE ROUTE!!!");
+  console.log(req.params.podId);
   db.note
     .deleteOne({ _id: req.params.noteId })
     .then(function() {
-      return db.Podcast.update(
+      return db.Podcast.findOneAndUpdate(
         { _id: req.params.podId },
         { $pull: { note: req.params.noteId } }
       );
     })
     .then(function(dbPodcast) {
-
       res.json(dbPodcast);
     })
     .catch(function(err) {
       res.json(err);
+    });
+});
+
+//Route for editing a note and updating in DB
+router.put("/notes/:id", function(req, res) {
+  db.note
+    .findOneAndUpdate(
+      {
+        _id: req.params.id
+      },
+      {
+        $set: {
+          title: req.body.title,
+          body: req.body.body
+        }
+      }
+    )
+    .then(function(dbNotes) {
+      res.render("saved", { dbNotes });
     });
 });
 module.exports = router;
