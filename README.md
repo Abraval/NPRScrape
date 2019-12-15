@@ -1,10 +1,12 @@
 # NPRScrape
-![](public/css/img/npr.png)
-
 
 > Deployed Link: [See Here](https://warm-sea-39546.herokuapp.com/)
 
 > Repository: [See Here](https://github.com/Abraval/NPRScrape)
+
+
+![](public/css/img/npr.png)
+
 
 
 
