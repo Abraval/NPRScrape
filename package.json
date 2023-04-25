@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/Abraval/nprScraper.git"
   },
-  "author": "",
+  "author": "Your Name or Organization Name",  // Update with the name of the author or organization
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Abraval/nprScraper/issues"
@@ -23,7 +23,8 @@
     "express-handlebars": "^3.1.0",
     "mongoose": "^5.8.0"
   },
-"engines": {
-  "npm": "9.6.5"
-}
+  "engines": {
+    "node": "14.x",  // Update with the version of Node.js used in your application
+    "npm": "6.x"  // Update with the version of npm used in your application
+  }
 }
